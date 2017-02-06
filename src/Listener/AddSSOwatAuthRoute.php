@@ -1,0 +1,25 @@
+<?php
+
+namespace Flarum\Auth\SSOwat\Listener;
+
+use Flarum\Event\ConfigureForumRoutes;
+use Illuminate\Contracts\Events\Dispatcher;
+
+class AddSSOwatAuthRoute
+{
+    /**
+     * @param Dispatcher $events
+     */
+    public function subscribe(Dispatcher $events)
+    {
+        $events->listen(ConfigureForumRoutes::class, [$this, 'configureForumRoutes']);
+    }
+
+    /**
+     * @param ConfigureForumRoutes $event
+     */
+    public function configureForumRoutes(ConfigureForumRoutes $event)
+    {
+        $event->get('/auth/ssowat', 'auth.ssowat', 'Flarum\Auth\SSOwat\SSOwatAuthController');
+    }
+}

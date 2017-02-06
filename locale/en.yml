@@ -1,0 +1,5 @@
+flarum-auth-ssowat:
+  forum:
+    log_in: => core.ref.log_in
+    log_in_with: Login with SSOwat
+    log_out: => core.ref.log_out
