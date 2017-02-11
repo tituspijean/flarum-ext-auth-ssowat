@@ -1,7 +1,7 @@
 
 <?php
 
-use Flarum\Auth\SSOwat\Listener;
+use TitusPiJean\Flarum\Auth\SSOwat\Listener;
 use Illuminate\Contracts\Events\Dispatcher;
 
 return function (Dispatcher $events) {

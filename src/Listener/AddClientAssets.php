@@ -1,6 +1,6 @@
 <?php
 
-namespace Flarum\Auth\SSOwat\Listener;
+namespace TitusPiJean\Flarum\Auth\SSOwat\Listener;
 
 use DirectoryIterator;
 use Flarum\Event\ConfigureWebApp;
@@ -28,7 +28,13 @@ class AddClientAssets
                 __DIR__.'/../../js/forum/dist/extension.js',
                 __DIR__.'/../../less/forum/extension.less'
             ]);
-            $event->addBootstrapper('flarum/auth/ssowat/main');
+            $event->addBootstrapper('tituspijean/flarum-ext-auth-ssowat/main');
+        }
+        if ($event->isAdmin()) {
+            $event->addAssets([
+                __DIR__.'/../../js/admin/dist/extension.js',
+            ]);
+            $event->addBootstrapper('tituspijean/flarum-ext-auth-ssowat/main');
         }
     }
 
@@ -46,3 +52,4 @@ class AddClientAssets
         }
     }
 }
+

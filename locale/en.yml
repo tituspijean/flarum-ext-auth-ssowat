@@ -1,5 +1,12 @@
-flarum-auth-ssowat:
+flarum-ext-auth-ssowat:
   forum:
     log_in: => core.ref.log_in
     log_in_with: Login with SSOwat
     log_out: => core.ref.log_out
+  admin:
+    description: Set SSOwat domain
+    settings:
+      title: SSOwat settings
+      address: SSOwat's domain (without "https://" or trailing "/")
+    buttons:
+      save: Save

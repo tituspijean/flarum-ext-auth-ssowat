@@ -4,10 +4,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Flarum\Auth\SSOwat;
+namespace TitusPiJean\Flarum\Auth\SSOwat;
 
 use Flarum\Forum\AuthenticationResponseFactory;
 use Flarum\Http\Controller\ControllerInterface;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Zend\Diactoros\Response\RedirectResponse;
 
@@ -18,14 +19,15 @@ class SSOwatAuthController implements ControllerInterface
 	 */
 	protected $authResponse;
 
-
-	/**
-	 * @param AuthenticationResponseFactory $authResponse
-	 */
-	public function __construct( AuthenticationResponseFactory $authResponse )
-	{
-		$this->authResponse = $authResponse;
-	}
+        /**
+         * @param AuthenticationResponseFactory $authResponse
+         * @param SettingsRepositoryInterface $settings
+         */
+        public function __construct( AuthenticationResponseFactory $authResponse, SettingsRepositoryInterface $settings )
+        {
+                $this->authResponse = $authResponse;
+                $this->settings = $settings;
+        }
 
 	/**
 	 * @param Request $request
@@ -33,39 +35,28 @@ class SSOwatAuthController implements ControllerInterface
 	 */
 	public function handle( Request $request )
 	{
+
 		if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW'])) {
-			return new Response("Authentification error", 500);
+			$ssowat      = $this->settings->get('flarum-ext-auth-ssowat.address');
+			$r           = base64_encode( "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+			$urlredirect = "https://" . $ssowat . "/yunohost/sso/?r=" . $r;
+			$response    = new RedirectResponse($urlredirect);
+			$response    = $response->withHeader('Authorization', '');
+			return $response;
 		} else {
+			$email = $request->getHeader('Email')[0];
 			$uid = $_SERVER['PHP_AUTH_USER'];
 			$password = $_SERVER['PHP_AUTH_PW'];
+
 			$identification = [
-				'username' => $uid
+				'username' => $uid,
+				'password' => $password
 			];
-			$config = [
-			    'domain_controllers'    => array('localhost'),
-			    'base_dn'               => 'ou=users,dc=yunohost,dc=org',
-			    'port'                  => 389,
-			    'timeout'               => 5,
+			$suggestions = [
+				'username' => $uid,
+				'email' => $email
 			];
-			$provider = new \Adldap\Connections\Provider($config);
-			$uid_dn='uid='.$uid.','.$config['base_dn'];
-			try {
-			    if ($provider->auth()->attempt($uid_dn, $password, $bindAsUser = true)) {
-				$user = $provider->search()->findBy('uid', $uid);
-				$suggestions = [
-					'username' => $uid,
-					'email' => $user->mail[0]
-				];
-				return $this->authResponse->make($request, $identification, $suggestions);
-				}
-			} catch (\Adldap\Exceptions\Auth\UsernameRequiredException $e) {
-				return new Response("No username", 500);
-			} catch (\Adldap\Exceptions\Auth\PasswordRequiredException $e) {
-				return new Response("No password", 500);
-			} catch (\Adldap\Exceptions\Auth\BindException $e) {
-				return new Response("Could not bind", 500);
-			}
-			return new Response("Error", 500);
+			return $this->authResponse->make($request, $identification, $suggestions);
 		}
 	}
 }

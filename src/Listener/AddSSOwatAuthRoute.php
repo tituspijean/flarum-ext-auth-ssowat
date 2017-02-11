@@ -1,6 +1,6 @@
 <?php
 
-namespace Flarum\Auth\SSOwat\Listener;
+namespace TitusPiJean\Flarum\Auth\SSOwat\Listener;
 
 use Flarum\Event\ConfigureForumRoutes;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -20,6 +20,6 @@ class AddSSOwatAuthRoute
      */
     public function configureForumRoutes(ConfigureForumRoutes $event)
     {
-        $event->get('/auth/ssowat', 'auth.ssowat', 'Flarum\Auth\SSOwat\SSOwatAuthController');
+        $event->get('/auth/ssowat', 'auth.ssowat', 'TitusPiJean\Flarum\Auth\SSOwat\SSOwatAuthController');
     }
 }
