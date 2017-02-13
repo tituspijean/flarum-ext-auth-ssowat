@@ -1,4 +1,4 @@
-<?php
+		<?php
 /*
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -35,9 +35,11 @@ class SSOwatAuthController implements ControllerInterface
 	 */
 	public function handle( Request $request )
 	{
-
+		$ssowat = $this->settings->get('flarum-ext-auth-ssowat.address');
+		if ($ssowat == '') {
+			return new Response("SSOwat domain is not set", 500);
+		}
 		if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW'])) {
-			$ssowat      = $this->settings->get('flarum-ext-auth-ssowat.address');
 			$r           = base64_encode( "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 			$urlredirect = "https://" . $ssowat . "/yunohost/sso/?r=" . $r;
 			$response    = new RedirectResponse($urlredirect);
