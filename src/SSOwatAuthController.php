@@ -1,4 +1,4 @@
-		<?php
+<?php
 /*
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -48,15 +48,14 @@ class SSOwatAuthController implements ControllerInterface
 		} else {
 			$email = $request->getHeader('Email')[0];
 			$uid = $_SERVER['PHP_AUTH_USER'];
-			$password = $_SERVER['PHP_AUTH_PW'];
 
 			$identification = [
 				'username' => $uid,
-				'password' => $password
 			];
 			$suggestions = [
 				'username' => $uid,
-				'email' => $email
+				'password' => substr(md5(microtime()), 0, 12),
+				'email' => $email,
 			];
 			return $this->authResponse->make($request, $identification, $suggestions);
 		}
