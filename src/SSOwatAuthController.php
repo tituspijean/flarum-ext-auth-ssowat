@@ -50,11 +50,10 @@ class SSOwatAuthController implements ControllerInterface
 			$uid = $_SERVER['PHP_AUTH_USER'];
 
 			$identification = [
-				'username' => $uid,
+				'ssowat_id' => $uid,
 			];
 			$suggestions = [
 				'username' => $uid,
-				'password' => substr(md5(microtime()), 0, 12),
 				'email' => $email,
 			];
 			return $this->authResponse->make($request, $identification, $suggestions);
