@@ -35,10 +35,10 @@ System.register("tituspijean/flarum-ext-auth-ssowat/addSSOwatPage", ["flarum/ext
 });;
 "use strict";
 
-System.register("tituspijean/flarum-ext-auth-ssowat/components/SSOwatPage", ["flarum/Component", "flarum/components/Button", "flarum/utils/saveSettings", "flarum/components/Alert", "flarum/components/Select", "flarum/components/Switch"], function (_export, _context) {
+System.register("tituspijean/flarum-ext-auth-ssowat/components/SSOwatPage", ["flarum/Component", "flarum/components/Button", "flarum/utils/saveSettings", "flarum/components/Alert", "flarum/components/FieldSet", "flarum/components/Select", "flarum/components/Switch"], function (_export, _context) {
     "use strict";
 
-    var Component, Button, saveSettings, Alert, Select, Switch, SSOwatPage;
+    var Component, Button, saveSettings, Alert, FieldSet, Select, Switch, SSOwatPage;
     return {
         setters: [function (_flarumComponent) {
             Component = _flarumComponent.default;
@@ -48,6 +48,8 @@ System.register("tituspijean/flarum-ext-auth-ssowat/components/SSOwatPage", ["fl
             saveSettings = _flarumUtilsSaveSettings.default;
         }, function (_flarumComponentsAlert) {
             Alert = _flarumComponentsAlert.default;
+        }, function (_flarumComponentsFieldSet) {
+            FieldSet = _flarumComponentsFieldSet.default;
         }, function (_flarumComponentsSelect) {
             Select = _flarumComponentsSelect.default;
         }, function (_flarumComponentsSwitch) {
@@ -71,7 +73,7 @@ System.register("tituspijean/flarum-ext-auth-ssowat/components/SSOwatPage", ["fl
 
                         this.fields = ['address'];
 
-                        this.checkboxes = [''];
+                        this.checkboxes = ['onlyUse'];
 
                         this.values = {};
 
@@ -91,15 +93,19 @@ System.register("tituspijean/flarum-ext-auth-ssowat/components/SSOwatPage", ["fl
                     value: function view() {
                         return [m('div', { className: 'SSOwatPage' }, [m('div', { className: 'container' }, [m('form', { onsubmit: this.onsubmit.bind(this) }, [m('fieldset', { className: 'SSOwatPage-preferences' }, [m('legend', {}, app.translator.trans('flarum-ext-auth-ssowat.admin.settings.title')), m('label', {}, app.translator.trans('flarum-ext-auth-ssowat.admin.settings.address')), m('input', {
                             className: 'FormControl',
-                            value: this.values.address() || '',
+                            value: this.values.address(),
                             oninput: m.withAttr('value', this.values.address)
-                        }), Button.component({
+                        }), Switch.component({
+                            state: this.values.onlyUse() || false,
+                            children: app.translator.trans('flarum-ext-auth-ssowat.admin.settings.onlyUse'),
+                            onchange: this.values.onlyUse
+                        })]), Button.component({
                             type: 'submit',
                             className: 'Button Button--primary',
                             children: app.translator.trans('flarum-ext-auth-ssowat.admin.buttons.save'),
                             loading: this.loading,
                             disabled: !this.changed()
-                        })])])])])];
+                        })])])])];
                     }
                 }, {
                     key: "changed",

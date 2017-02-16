@@ -2,6 +2,7 @@ import Component from "flarum/Component";
 import Button from "flarum/components/Button";
 import saveSettings from "flarum/utils/saveSettings";
 import Alert from "flarum/components/Alert";
+import FieldSet from "flarum/components/FieldSet";
 import Select from "flarum/components/Select";
 import Switch from "flarum/components/Switch";
 
@@ -15,7 +16,7 @@ export default class SSOwatPage extends Component {
         ];
 
         this.checkboxes = [
-            ''
+            'onlyUse'
         ];
 
         this.values = {};
@@ -37,22 +38,27 @@ export default class SSOwatPage extends Component {
             m('div', {className: 'SSOwatPage'}, [
                 m('div', {className: 'container'}, [
                     m('form', {onsubmit: this.onsubmit.bind(this)}, [
-                        m('fieldset', {className: 'SSOwatPage-preferences'}, [
+                       m('fieldset', {className: 'SSOwatPage-preferences'}, [
                             m('legend', {}, app.translator.trans('flarum-ext-auth-ssowat.admin.settings.title')),
                             m('label', {}, app.translator.trans('flarum-ext-auth-ssowat.admin.settings.address')),
                             m('input', {
                                 className: 'FormControl',
-                                value: this.values.address() || '',
+                                value: this.values.address(),
                                 oninput: m.withAttr('value', this.values.address)
                             }),
-                           Button.component({
+                            Switch.component({
+                                        state: this.values.onlyUse() || false,
+                                        children: app.translator.trans('flarum-ext-auth-ssowat.admin.settings.onlyUse'),
+                                        onchange: this.values.onlyUse
+                                    })
+			]),
+                            Button.component({
                                  type: 'submit',
                                  className: 'Button Button--primary',
                                  children: app.translator.trans('flarum-ext-auth-ssowat.admin.buttons.save'),
                                  loading: this.loading,
                                  disabled: !this.changed()
                             })
-                        ])
                     ])
                 ])
             ])
