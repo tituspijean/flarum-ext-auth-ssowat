@@ -11,6 +11,7 @@ use Flarum\Http\Controller\ControllerInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Zend\Diactoros\Response\RedirectResponse;
+use Zend\Diactoros\Response\TextResponse;
 
 class SSOwatAuthController implements ControllerInterface
 {
@@ -37,7 +38,7 @@ class SSOwatAuthController implements ControllerInterface
 	{
 		$ssowat = $this->settings->get('flarum-ext-auth-ssowat.address');
 		if ($ssowat == '') {
-			return new Response("SSOwat domain is not set", 500);
+			return new TextResponse('SSOwat domain is not set. Please configure SSOwat extension. ', 500, []);
 		}
 		if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW'])) {
 			$r           = base64_encode( "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
@@ -50,6 +51,7 @@ class SSOwatAuthController implements ControllerInterface
 			$uid = $_SERVER['PHP_AUTH_USER'];
 
 			$identification = [
+				'username' => $uid,
 				'ssowat_id' => $uid,
 			];
 			$suggestions = [

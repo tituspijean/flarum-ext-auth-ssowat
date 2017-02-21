@@ -2,10 +2,10 @@
 
 namespace TitusPiJean\Flarum\Auth\SSOwat\Listener;
 
+use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Event\PrepareApiAttributes;
 use Flarum\Api\Serializer\ForumSerializer;
-use Flarum\Settings\SettingsRepositoryInterface;
 
 class AddApiAttributes {
     /**
@@ -31,4 +31,5 @@ class AddApiAttributes {
             $event->attributes['onlyUseSSOwat'] = (bool) $this->settings->get('flarum-ext-auth-ssowat.onlyUse');
         }
     }
+
 }
