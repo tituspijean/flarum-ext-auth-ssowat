@@ -52,11 +52,11 @@ class SSOwatAuthController implements ControllerInterface
 
 			$identification = [
 				'username' => $uid,
-				'ssowat_id' => $uid,
+				'email' => $email
 			];
 			$suggestions = [
 				'username' => $uid,
-				'email' => $email,
+				'email' => $email
 			];
 			return $this->authResponse->make($request, $identification, $suggestions);
 		}
