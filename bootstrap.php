@@ -1,5 +1,4 @@
-
-<?php
+<?php namespace TitusPiJean\Flarum\Auth\SSOwat;
 
 use TitusPiJean\Flarum\Auth\SSOwat\Listener;
 use Illuminate\Contracts\Events\Dispatcher;
