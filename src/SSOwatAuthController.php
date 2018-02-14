@@ -1,10 +1,4 @@
-<?php
-/*
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace TitusPiJean\Flarum\Auth\SSOwat;
+<?php namespace TitusPiJean\Flarum\Auth\SSOwat;
 
 use Flarum\Forum\AuthenticationResponseFactory;
 use Flarum\Http\Controller\ControllerInterface;
@@ -38,7 +32,8 @@ class SSOwatAuthController implements ControllerInterface
 	{
 		$ssowat = $this->settings->get('flarum-ext-auth-ssowat.address');
 		if ($ssowat == '') {
-			return new TextResponse('SSOwat domain is not set. Please configure SSOwat extension. ', 500, []);
+            $this->settings->set('flarum-ext-auth-ssowat.onlyUse', false);
+			return new TextResponse('SSOwat domain is not set, Flarum login has been reactivated. Please configure SSOwat extension. ', 500, []);
 		}
 		if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW'])) {
 			$r           = base64_encode( "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
