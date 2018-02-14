@@ -28,8 +28,8 @@ class AddApiAttributes {
 
     public function prepareApiAttributes(PrepareApiAttributes $event) {
         if ($event->isSerializer(ForumSerializer::class)) {
-            $event->attributes['onlyUseSSOwat'] = (bool) $this->settings->get('flarum-ext-auth-ssowat.onlyUse');
+            $event->attributes['address'] = $this->settings->get('flarum-ext-auth-ssowat.address');
+            $event->attributes['onlyUse'] = (bool) $this->settings->get('flarum-ext-auth-ssowat.onlyUse');
         }
     }
-
 }
