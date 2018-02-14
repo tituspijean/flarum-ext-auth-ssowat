@@ -15,7 +15,7 @@
         "source": "https://github.com/tituspijean/flarum-ext-auth-ssowat"
     },
     "require": {
-        "flarum/core": "^0.1.0-beta.6"
+        "flarum/core": "^0.1.0-beta.7"
     },
     "autoload": {
         "psr-4": {
@@ -24,7 +24,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2.x-dev"
+            "dev-master": "0.3-dev"
         },
         "flarum-extension": {
             "title": "SSOwat login",
