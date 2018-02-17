@@ -1,6 +1,6 @@
 <?php
 
-namespace TitusPiJean\Flarum\Auth\SSOwat\Listener;
+namespace TitusPiJean\Flarum\Auth\SSOwat\Listeners;
 
 use DirectoryIterator;
 use Flarum\Event\ConfigureWebApp;
@@ -53,4 +53,3 @@ class AddClientAssets
     }
 
 }
-

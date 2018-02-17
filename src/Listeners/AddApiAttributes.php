@@ -1,6 +1,6 @@
 <?php
 
-namespace TitusPiJean\Flarum\Auth\SSOwat\Listener;
+namespace TitusPiJean\Flarum\Auth\SSOwat\Listeners;
 
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
