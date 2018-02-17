@@ -1,4 +1,4 @@
-<?php namespace TitusPiJean\Flarum\Auth\SSOwat;
+<?php namespace TitusPiJean\Flarum\Auth\SSOwat\Controllers;
 
 use Flarum\Forum\AuthenticationResponseFactory;
 use Flarum\Http\Controller\ControllerInterface;
@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Response\TextResponse;
 
-class SSOwatAuthController implements ControllerInterface
+class SSOwatLogInController implements ControllerInterface
 {
 	/**
 	 * @var AuthenticationResponseFactory
