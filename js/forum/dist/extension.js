@@ -34,18 +34,16 @@ System.register('tituspijean/flarum-ext-auth-ssowat/main', ['flarum/extend', 'fl
 						}
 
 						if (items.has('logIn')) {
-							(function () {
-								var width = 600;
-								var height = 400;
-								var $window = $(window);
-								items.replace('logIn', Button.component({
-									children: app.translator.trans('flarum-ext-auth-ssowat.forum.log_in'),
-									className: 'Button Button--link',
-									onclick: function onclick() {
-										return window.open(app.forum.attribute('baseUrl') + '/auth/ssowat', 'logInPopup', 'width=' + width + ',' + ('height=' + height + ',') + ('top=' + ($window.height() / 2 - height / 2) + ',') + ('left=' + ($window.width() / 2 - width / 2) + ',') + 'status=no,scrollbars=no,resizable=yes');
-									}
-								}), 0);
-							})();
+							var width = 600;
+							var height = 400;
+							var $window = $(window);
+							items.replace('logIn', Button.component({
+								children: app.translator.trans('flarum-ext-auth-ssowat.forum.log_in'),
+								className: 'Button Button--link',
+								onclick: function onclick() {
+									return window.open(app.forum.attribute('baseUrl') + '/auth/ssowat', 'logInPopup', 'width=' + width + ',' + ('height=' + height + ',') + ('top=' + ($window.height() / 2 - height / 2) + ',') + ('left=' + ($window.width() / 2 - width / 2) + ',') + 'status=no,scrollbars=no,resizable=yes');
+								}
+							}), 0);
 						}
 					}
 				});
