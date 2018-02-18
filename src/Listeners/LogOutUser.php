@@ -19,7 +19,7 @@ class LogOutUser {
     }
     public function addLogoutRedirect(UserLoggedOut $event)
     {
-      if isset($_SERVER['PHP_AUTH_USER']) {
+      if (isset($_SERVER['PHP_AUTH_USER'])) {
       $ssowat = $this->settings->get('flarum-ext-auth-ssowat.address');
       $ssowat_user = $_SERVER['PHP_AUTH_USER'];
       $flarum_user = $event->user->username;
