@@ -1,17 +1,20 @@
 'use strict';
 
-System.register('tituspijean/flarum-ext-auth-ssowat/main', ['flarum/extend', 'flarum/app', 'flarum/components/HeaderSecondary', 'flarum/components/LogInButtons', 'flarum/components/LogInButton', 'flarum/components/Button', 'flarum/utils/ItemList'], function (_export, _context) {
+System.register('tituspijean-auth-ssowat/main', ['flarum/extend', 'flarum/app', 'flarum/components/HeaderSecondary', 'flarum/components/SessionDropdown', 'flarum/components/SettingsPage', 'flarum/components/LogInButtons', 'flarum/components/LogInButton', 'flarum/components/Button', 'flarum/utils/ItemList'], function (_export, _context) {
 	"use strict";
 
-	var extend, override, app, HeaderSecondary, LogInButtons, LogInButton, Button, ItemList;
+	var extend, app, HeaderSecondary, SessionDropdown, SettingsPage, LogInButtons, LogInButton, Button, ItemList, translationPrefix;
 	return {
 		setters: [function (_flarumExtend) {
 			extend = _flarumExtend.extend;
-			override = _flarumExtend.override;
 		}, function (_flarumApp) {
 			app = _flarumApp.default;
 		}, function (_flarumComponentsHeaderSecondary) {
 			HeaderSecondary = _flarumComponentsHeaderSecondary.default;
+		}, function (_flarumComponentsSessionDropdown) {
+			SessionDropdown = _flarumComponentsSessionDropdown.default;
+		}, function (_flarumComponentsSettingsPage) {
+			SettingsPage = _flarumComponentsSettingsPage.default;
 		}, function (_flarumComponentsLogInButtons) {
 			LogInButtons = _flarumComponentsLogInButtons.default;
 		}, function (_flarumComponentsLogInButton) {
@@ -22,42 +25,57 @@ System.register('tituspijean/flarum-ext-auth-ssowat/main', ['flarum/extend', 'fl
 			ItemList = _flarumUtilsItemList.default;
 		}],
 		execute: function () {
+			translationPrefix = 'tituspijean-auth-ssowat.forum.';
 
-			app.initializers.add('tituspijean-flarum-ext-auth-ssowat', function () {
 
-				extend(HeaderSecondary.prototype, 'items', function (items) {
-					var onlyUseSSOwat = app.forum.attribute('onlyUseSSOwat');
+			app.initializers.add('tituspijean-auth-ssowat', function () {
 
-					if (onlyUseSSOwat == true) {
+				extend(HeaderSecondary.prototype, 'items', addLoginLink);
+				extend(LogInButtons.prototype, 'items', addLoginButton);
+				extend(SessionDropdown.prototype, 'items', replaceLogOutButton);
+
+				function addLoginLink(items) {
+					if (app.forum.attribute('ssowat.onlyUse')) {
 						if (items.has('signUp')) {
 							items.remove('signUp');
 						}
-
 						if (items.has('logIn')) {
+							items.remove('logIn');
 							var width = 600;
-							var height = 400;
+							var height = 700;
 							var $window = $(window);
-							items.replace('logIn', Button.component({
-								children: app.translator.trans('flarum-ext-auth-ssowat.forum.log_in'),
+							items.add('ssowatLogIn', Button.component({
+								children: app.translator.trans(translationPrefix + 'log_in_with'),
 								className: 'Button Button--link',
 								onclick: function onclick() {
-									return window.open(app.forum.attribute('baseUrl') + '/auth/ssowat', 'logInPopup', 'width=' + width + ',' + ('height=' + height + ',') + ('top=' + ($window.height() / 2 - height / 2) + ',') + ('left=' + ($window.width() / 2 - width / 2) + ',') + 'status=no,scrollbars=no,resizable=yes');
+									return window.open(app.forum.attribute('baseUrl') + '/ssowat/login', 'logInPopup', 'width=' + width + ',' + ('height=' + height + ',') + ('top=' + ($window.height() / 2 - height / 2) + ',') + ('left=' + ($window.width() / 2 - width / 2) + ',') + 'status=no,scrollbars=no,resizable=yes');
 								}
 							}), 0);
 						}
 					}
-				});
+				}
 
-				extend(LogInButtons.prototype, 'items', function (items) {
+				function addLoginButton(items) {
 					items.add('ssowat', m(
 						LogInButton,
-						{
-							className: 'Button LogInButton--ssowat',
+						{ className: 'Button LogInButton--ssowat',
 							icon: 'address-book',
-							path: '/auth/ssowat' },
-						app.translator.trans('flarum-ext-auth-ssowat.forum.log_in_with')
+							path: '/ssowat/login' },
+						app.translator.trans(translationPrefix + 'log_in_with')
 					));
-				});
+				}
+
+				function logout() {
+					window.location = app.forum.attribute('baseUrl') + '/ssowat/logout?token=' + app.session.csrfToken;
+				}
+
+				function replaceLogOutButton(items) {
+					if (app.forum.attribute('ssowat.user')) items.replace('logOut', Button.component({
+						icon: 'fa fa-sign-out-alt',
+						children: app.translator.trans('core.forum.header.log_out_button'),
+						onclick: logout.bind()
+					}), -100);
+				}
 			});
 		}
 	};

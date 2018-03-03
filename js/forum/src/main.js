@@ -1,48 +1,72 @@
-import { extend, override } from 'flarum/extend';
+import {
+	extend
+}
+from 'flarum/extend';
 import app from 'flarum/app';
 import HeaderSecondary from 'flarum/components/HeaderSecondary';
+import SessionDropdown from "flarum/components/SessionDropdown";
+import SettingsPage from "flarum/components/SettingsPage";
 import LogInButtons from 'flarum/components/LogInButtons';
 import LogInButton from 'flarum/components/LogInButton';
 import Button from 'flarum/components/Button';
 import ItemList from 'flarum/utils/ItemList';
 
-app.initializers.add('tituspijean-flarum-ext-auth-ssowat', () => {
+const translationPrefix = 'tituspijean-auth-ssowat.forum.';
 
-	extend(HeaderSecondary.prototype, 'items', function(items) {
-		const onlyUseSSOwat = app.forum.attribute( 'onlyUseSSOwat' );
+app.initializers.add('tituspijean-auth-ssowat', () => {
 
-		if( onlyUseSSOwat == true ) {
+	extend(HeaderSecondary.prototype, 'items', addLoginLink);
+	extend(LogInButtons.prototype, 'items', addLoginButton);
+	extend(SessionDropdown.prototype, 'items', replaceLogOutButton);
+
+	function addLoginLink(items) {
+		if (app.forum.attribute('ssowat.onlyUse')) {
 			if (items.has('signUp')) {
 				items.remove('signUp');
 			}
-
 			if (items.has('logIn')) {
+				items.remove('logIn');
 				const width = 600;
-      				const height = 400;
-      				const $window = $(window);
-				items.replace('logIn', Button.component({
-					children: app.translator.trans('flarum-ext-auth-ssowat.forum.log_in'),
+				const height = 700;
+				const $window = $(window);
+				items.add('ssowatLogIn', Button.component({
+					children: app.translator.trans(translationPrefix + 'log_in_with'),
 					className: 'Button Button--link',
-					onclick: () =>       window.open(app.forum.attribute('baseUrl') + '/auth/ssowat', 'logInPopup',
-       								`width=${width},` +
-        							`height=${height},` +
-        							`top=${$window.height() / 2 - height / 2},` +
-        							`left=${$window.width() / 2 - width / 2},` +
-        							'status=no,scrollbars=no,resizable=yes')
+					onclick: () => window.open(app.forum.attribute('baseUrl') + '/ssowat/login', 'logInPopup',
+						`width=${width},` +
+						`height=${height},` +
+						`top=${$window.height() / 2 - height / 2},` +
+						`left=${$window.width() / 2 - width / 2},` +
+						'status=no,scrollbars=no,resizable=yes')
 				}), 0);
 			}
 		}
-	});
+	}
 
-	extend(LogInButtons.prototype, 'items', function(items) {
+	function addLoginButton(items) {
 		items.add('ssowat',
-			<LogInButton
-			className="Button LogInButton--ssowat"
-			icon="address-book"
-			path="/auth/ssowat">
-			{app.translator.trans('flarum-ext-auth-ssowat.forum.log_in_with')}
+			<LogInButton className = "Button LogInButton--ssowat"
+				icon = "address-book"
+				path = "/ssowat/login" >
+				{app.translator.trans(translationPrefix + 'log_in_with')}
 			</LogInButton>
 		);
-  	});
+	}
+
+	function logout() {
+    window.location = app.forum.attribute('baseUrl') + '/ssowat/logout?token=' + app.session.csrfToken;
+}
+
+	function replaceLogOutButton(items) {
+		if (app.forum.attribute('ssowat.user'))
+		items.replace('logOut',
+      Button.component({
+        icon: 'fa fa-sign-out-alt',
+        children: app.translator.trans('core.forum.header.log_out_button'),
+        onclick: logout.bind()
+      }),
+      -100
+    );
+	}
 
 });
