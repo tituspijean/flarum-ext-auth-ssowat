@@ -1,4 +1,4 @@
-flarum-ext-auth-ssowat:
+tituspijean-auth-ssowat:
   forum:
     log_in: => core.ref.log_in
     log_in_with: Log in with SSOwat
@@ -7,7 +7,7 @@ flarum-ext-auth-ssowat:
     description: Set SSOwat domain
     settings:
       title: SSOwat settings
-      address: SSOwat's domain (without "https://" or trailing "/")
+      domain: SSOwat's domain (without "https://" or trailing "/")
       onlyUse: Disable Flarum login and only use SSOwat authentication
     buttons:
       save: Save
