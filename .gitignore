@@ -1,1 +1,4 @@
-node_modules/
+js/*/node_modules
+js/*/package-lock.json
+vendor/
+composer.lock
