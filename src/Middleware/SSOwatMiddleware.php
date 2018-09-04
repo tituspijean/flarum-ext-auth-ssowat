@@ -45,21 +45,26 @@ class SSOwatMiddleware implements MiddlewareInterface
     {
         // Retrieve the session and check if the user logged in with SSOwat
         $session=$request->getAttribute('session');
-        if ($session->get('ssowatUser')) {
-            // If so, retrieve their username and
-            // check if it is the same as the one provided by SSOwat
-            $actor=$request->getAttribute('actor');
-            if (!isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] !== $actor->username) {
-                // If not, do the same steps as Flarum's LogOutController
-                $this->authenticator->logOut($session);
-                $actor->accessTokens()->delete();
-                $this->events->fire(new UserLoggedOut($actor));
-                $this->rememberer->forget($response);
-                // Throw an error if JSON was requested, or redirect to logout
-                if (str_contains($request->getHeaderLine('content-type'), 'json')) {
-                    throw new PermissionDeniedException("You have been logged out from YunoHost.", 401, null);
-                } else {
-                    return new RedirectResponse($this->app->url()."/logout?token=".$session->get('csrf_token'));
+        $ssowatUser=$session->get('ssowatUser');
+        if ($ssowatUser) {
+            if ($ssowatUser > 1) {
+            $session->set('ssowatUser', $ssowatUser - 1);
+            } else {
+                // If so, retrieve their username and
+                // check if it is the same as the one provided by SSOwat
+                $actor=$request->getAttribute('actor');
+                if (!isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] !== $actor->username) {
+                    // If not, do the same steps as Flarum's LogOutController
+                    $this->authenticator->logOut($session);
+                    $actor->accessTokens()->delete();
+                    $this->events->fire(new UserLoggedOut($actor));
+                    $this->rememberer->forget($response);
+                    // Throw an error if JSON was requested, or redirect to logout
+                    if (str_contains($request->getHeaderLine('content-type'), 'json')) {
+                        throw new PermissionDeniedException("You have been logged out from YunoHost.", 401, null);
+                    } else {
+                        return new RedirectResponse($this->app->url()."/logout?token=".$session->get('csrf_token'));
+                    }
                 }
             }
         }

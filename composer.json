@@ -21,9 +21,6 @@
 		}
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-master": "0.5-dev"
-		},
 		"flarum-extension": {
 			"title": "SSOwat login",
 			"icon": {

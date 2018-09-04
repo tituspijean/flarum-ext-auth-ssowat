@@ -61,9 +61,9 @@ class SSOwatLogOutController implements ControllerInterface
     {
         // Prepare logging out of Flarum
         $session = $request->getAttribute('session');
-        //if (array_get($request->getQueryParams(), 'token') !== $session->get('csrf_token')) {
-        //    throw new TokenMismatchException;
-        //}
+        if (array_get($request->getQueryParams(), 'token') !== $session->get('csrf_token')) {
+            throw new TokenMismatchException;
+        }
         $actor = $request->getAttribute('actor');
         $this->assertRegistered($actor);
         $url = array_get($request->getQueryParams(), 'return', $this->app->url());
