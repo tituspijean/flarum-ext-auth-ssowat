@@ -6,6 +6,7 @@ use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Response\TextResponse;
+use Flarum\Core\User;
 
 class SSOwatLogInController implements ControllerInterface
 {
@@ -60,9 +61,15 @@ Please configure SSOwat extension.', 500, []);
                 'username' => $uid,
                 'email' => $email
             ];
-            // Store in session that the user logged in with SSOwat
+            $user = User::where($identification)->first();
             $session = $request->getAttribute('session');
-            $session->set('ssowatUser', true);
+            if ($user) {
+                // If user exists, then we expect them to be logged in
+                $session->set('ssowatUser', 1);
+            } else {
+                // If user does not exist, then we at least set the session for after signing up
+                $session->set('ssowatUser', 2);
+            }
             $session->save();
             // Send credentials to Flarum it will either log in, or sign up
             return $this->authResponse->make($request, $identification, $suggestions);
