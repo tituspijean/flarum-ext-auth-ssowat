@@ -1,8 +1,6 @@
-import {
-	extend
-}
-from 'flarum/extend';
+import { extend } from 'flarum/extend';
 import app from 'flarum/app';
+
 import HeaderSecondary from 'flarum/components/HeaderSecondary';
 import SessionDropdown from "flarum/components/SessionDropdown";
 import SettingsPage from "flarum/components/SettingsPage";

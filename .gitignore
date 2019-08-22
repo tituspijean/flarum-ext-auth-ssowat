@@ -1,5 +1,6 @@
-js/*/node_modules
-js/*/package-lock.json
-vendor/
-composer.lock
-scripts/
+/vendor
+composer.phar
+.DS_Store
+Thumbs.db
+node_modules
+js/dist/*

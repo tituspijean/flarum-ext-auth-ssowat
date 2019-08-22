@@ -1,7 +1,7 @@
 <?php namespace TitusPiJean\Flarum\Auth\SSOwat\Controllers;
 
-use Flarum\Core\Access\AssertPermissionTrait;
-use Flarum\Event\UserLoggedOut;
+use Flarum\User\AssertPermissionTrait;
+use Flarum\User\Event\LoggedOut;
 use Flarum\Foundation\Application;
 use Flarum\Http\Controller\ControllerInterface;
 use Flarum\Http\Exception\TokenMismatchException;
@@ -78,7 +78,7 @@ class SSOwatLogOutController implements ControllerInterface
         // Logging out and redirecting
         $this->authenticator->logOut($session);
         $actor->accessTokens()->delete();
-        $this->events->fire(new UserLoggedOut($actor));
+        $this->events->fire(new LoggedOut($actor));
         return $this->rememberer->forget($response);
     }
 }
