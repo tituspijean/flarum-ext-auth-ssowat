@@ -24,7 +24,7 @@
 		"flarum-extension": {
 			"title": "SSOwat login",
 			"icon": {
-				"name": "address-book",
+				"name": "far fa-id-badge",
 				"backgroundColor": "#b15959",
 				"color": "#fff"
 			}
