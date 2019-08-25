@@ -44,7 +44,7 @@ app.initializers.add('tituspijean-auth-ssowat', () => {
 	function addLoginButton(items) {
 		items.add('ssowat',
 			<LogInButton className = "Button LogInButton--ssowat"
-				icon = "address-book"
+				icon = "far fa-id-badge"
 				path = "/ssowat/login" >
 				{app.translator.trans(translationPrefix + 'log_in_with')}
 			</LogInButton>
@@ -59,7 +59,7 @@ app.initializers.add('tituspijean-auth-ssowat', () => {
 		if (app.forum.attribute('ssowat.user'))
 		items.replace('logOut',
       Button.component({
-        icon: 'fa fa-sign-out-alt',
+        icon: 'fas fa-sign-out-alt',
         children: app.translator.trans('core.forum.header.log_out_button'),
         onclick: logout.bind()
       }),

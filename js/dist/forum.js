@@ -176,7 +176,7 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tituspijean-
   function addLoginButton(items) {
     items.add('ssowat', m(flarum_components_LogInButton__WEBPACK_IMPORTED_MODULE_6___default.a, {
       className: "Button LogInButton--ssowat",
-      icon: "address-book",
+      icon: "far fa-id-badge",
       path: "/ssowat/login"
     }, flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans(translationPrefix + 'log_in_with')));
   }
@@ -187,7 +187,7 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tituspijean-
 
   function replaceLogOutButton(items) {
     if (flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.forum.attribute('ssowat.user')) items.replace('logOut', flarum_components_Button__WEBPACK_IMPORTED_MODULE_7___default.a.component({
-      icon: 'fa fa-sign-out-alt',
+      icon: 'fas fa-sign-out-alt',
       children: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans('core.forum.header.log_out_button'),
       onclick: logout.bind()
     }), -100);
