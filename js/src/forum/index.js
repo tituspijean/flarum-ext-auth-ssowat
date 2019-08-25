@@ -25,7 +25,7 @@ app.initializers.add('tituspijean-auth-ssowat', () => {
 			if (items.has('logIn')) {
 				items.remove('logIn');
 				const width = 600;
-				const height = 700;
+				const height = 900;
 				const $window = $(window);
 				items.add('ssowatLogIn', Button.component({
 					children: app.translator.trans(translationPrefix + 'log_in_with'),
