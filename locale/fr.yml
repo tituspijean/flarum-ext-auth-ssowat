@@ -1,0 +1,13 @@
+tituspijean-auth-ssowat:
+  forum:
+    log_in: => core.ref.log_in
+    log_in_with: Connexion avec SSOwat
+    log_out: => core.ref.log_out
+  admin:
+    description: Spécifier le domaine principal de SSOwat
+    settings:
+      title: Paramètres SSOwat
+      domain: Domaine SSOwat (sans "https://" ni "/" à la fin)
+      onlyUse: Désactiver la connexion via Flarum et n'utiliser que SSOwat
+    buttons:
+      save: Sauvegarder
