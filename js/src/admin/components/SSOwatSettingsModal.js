@@ -1,4 +1,3 @@
-import app from 'flarum/app';
 import SettingsModal from 'flarum/components/SettingsModal';
 import Switch from 'flarum/components/Switch';
 

@@ -1,8 +1,6 @@
-import {
-	extend
-}
-from 'flarum/extend';
+import { extend } from 'flarum/extend';
 import app from 'flarum/app';
+
 import HeaderSecondary from 'flarum/components/HeaderSecondary';
 import SessionDropdown from "flarum/components/SessionDropdown";
 import SettingsPage from "flarum/components/SettingsPage";
@@ -27,7 +25,7 @@ app.initializers.add('tituspijean-auth-ssowat', () => {
 			if (items.has('logIn')) {
 				items.remove('logIn');
 				const width = 600;
-				const height = 700;
+				const height = 900;
 				const $window = $(window);
 				items.add('ssowatLogIn', Button.component({
 					children: app.translator.trans(translationPrefix + 'log_in_with'),
@@ -46,7 +44,7 @@ app.initializers.add('tituspijean-auth-ssowat', () => {
 	function addLoginButton(items) {
 		items.add('ssowat',
 			<LogInButton className = "Button LogInButton--ssowat"
-				icon = "address-book"
+				icon = "far fa-id-badge"
 				path = "/ssowat/login" >
 				{app.translator.trans(translationPrefix + 'log_in_with')}
 			</LogInButton>
@@ -61,7 +59,7 @@ app.initializers.add('tituspijean-auth-ssowat', () => {
 		if (app.forum.attribute('ssowat.user'))
 		items.replace('logOut',
       Button.component({
-        icon: 'fa fa-sign-out-alt',
+        icon: 'fas fa-sign-out-alt',
         children: app.translator.trans('core.forum.header.log_out_button'),
         onclick: logout.bind()
       }),

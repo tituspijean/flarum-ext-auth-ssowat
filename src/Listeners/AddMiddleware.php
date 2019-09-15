@@ -2,29 +2,25 @@
 
 namespace TitusPiJean\Flarum\Auth\SSOwat\Listeners;
 
-use Flarum\Foundation\Application;
-use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Event\ConfigureMiddleware;
+use Illuminate\Events\Dispatcher;
 use TitusPiJean\Flarum\Auth\SSOwat\Middleware\SSOwatMiddleware;
 
 class AddMiddleware
 {
     /**
-     * @var Application
+     * Subscribes to the Flarum events.
+     *
+     * @param Dispatcher $events
      */
-    private $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(ConfigureMiddleware::class, [$this, 'prevent']);
+        $events->listen(ConfigureMiddleware::class, [$this, 'addMiddleware']);
     }
-
-    public function prevent(ConfigureMiddleware $event)
+    /**
+     * @param ConfigureMiddleware $event
+     */
+    public function addMiddleware(ConfigureMiddleware $event)
     {
         $event->pipe(app(SSOwatMiddleware::class));
     }

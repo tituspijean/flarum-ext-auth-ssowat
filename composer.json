@@ -13,7 +13,7 @@
 		"source": "https://github.com/tituspijean/flarum-ext-auth-ssowat"
 	},
 	"require": {
-		"flarum/core": "^0.1.0-beta.7"
+		"flarum/core": "^0.1.0-beta.9"
 	},
 	"autoload": {
 		"psr-4": {
@@ -24,7 +24,7 @@
 		"flarum-extension": {
 			"title": "SSOwat login",
 			"icon": {
-				"name": "address-book",
+				"name": "far fa-id-badge",
 				"backgroundColor": "#b15959",
 				"color": "#fff"
 			}
