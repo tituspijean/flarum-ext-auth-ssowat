@@ -5,6 +5,7 @@ use Flarum\Http\Rememberer;
 use Flarum\Http\SessionAuthenticator;
 use Flarum\User\AssertPermissionTrait;
 use Flarum\User\User;
+use Flarum\User\UserRepository;
 use Exception;
 use Flarum\Forum\Auth\Registration;
 use Flarum\Forum\Auth\ResponseFactory;
@@ -52,37 +53,34 @@ Please configure SSOwat extension.', 500, []);
         } else {
             // Retrieve user information
             $email = $_SERVER['HTTP_EMAIL'];
-            $name = $_SERVER['HTTP_NAME'];
             $uid = $_SERVER['PHP_AUTH_USER'];
             // Prepare Flarum id and suggestions
             $identification = [
                 'username' => $uid,
-                'email' => $email
+                'email' => $email,
             ];
-            $suggestions = [
-                'username' => $uid,
-                'name' => $name,
-                'email' => $email
-            ];
-            $user = User::where($identification)->first();
+            $user = UserRepository::findByIdentification($identification);
             $session = $request->getAttribute('session');
-            if ($user) {
-                // If user exists, then we expect them to be logged in
-                $session->put('ssowatUser', 1);
+            if (is_null($user)) {
+              // If user does not exist, then we at least set the session for after signing up
+              $session->put('ssowatUser', 2);
+              $user = $identification;
             } else {
-                // If user does not exist, then we at least set the session for after signing up
-                $session->put('ssowatUser', 2);
+              // If user exists, then we expect them to be logged in
+              $session->put('ssowatUser', 1);
             }
             $session->save();
+            $user['payload'] = $user;
             // Send credentials to Flarum it will either log in, or sign up
             return $this->response->make(
               'ssowat', $uid,
               function (Registration $registration) use ($user) {
-                  $registration
-                      ->provideTrustedEmail($user->email)
-                      ->suggestUsername($user->getDisplayNameAttribute())
-                      ->setPayload($user->toArray());
+                $registration->provide('username', $user['username'])
+                  ->setPayload($user['payload']);
+                if (!empty($user['email'])) {
+                  $registration->provideTrustedEmail($user['email']);
                 }
+              }
             );
         }
     }
