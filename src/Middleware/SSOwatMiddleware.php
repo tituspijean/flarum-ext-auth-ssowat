@@ -45,7 +45,7 @@ public function __construct(
         $ssowatUser=$session->get('ssowatUser');
         if ($ssowatUser) {
             if ($ssowatUser > 1) {
-            $session->set('ssowatUser', $ssowatUser - 1);
+            $session->put('ssowatUser', $ssowatUser - 1);
             } else {
                 // If so, retrieve their username and
                 // check if it is the same as the one provided by SSOwat
