@@ -159,8 +159,8 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tituspijean-
 
       if (items.has('logIn')) {
         items.remove('logIn');
-        var width = 600;
-        var height = 900;
+        var width = window.outerWidth / 2;
+        var height = 2 * window.outerHeight / 3;
         var $window = $(window);
         items.add('ssowatLogIn', flarum_components_Button__WEBPACK_IMPORTED_MODULE_7___default.a.component({
           children: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans(translationPrefix + 'log_in_with'),
