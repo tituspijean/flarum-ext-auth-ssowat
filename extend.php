@@ -14,7 +14,5 @@ return [
     ->get('/ssowat/login', 'auth.ssowat', Controllers\SSOwatLogInController::class),
   (new Extend\Routes('forum'))
     ->get('/ssowat/logout', 'logout.ssowat', Controllers\SSOwatLogOutController::class),
-  function (Dispatcher $events) {
-    $events->subscribe(Listeners\AddMiddleware::class);
-  },
+  (new Extend\Middleware('frontend'))->add(Middleware\SSOwatMiddleware::class)
 ];
