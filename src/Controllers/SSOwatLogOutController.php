@@ -9,7 +9,7 @@ use Flarum\Http\Rememberer;
 use Flarum\Http\SessionAuthenticator;
 use Illuminate\Contracts\Events\Dispatcher;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Zend\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
 use Flarum\Settings\SettingsRepositoryInterface;
 
 class SSOwatLogOutController implements ControllerInterface
