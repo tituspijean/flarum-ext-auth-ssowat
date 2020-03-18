@@ -14,5 +14,5 @@ return [
     ->get('/ssowat/login', 'auth.ssowat', Controllers\SSOwatLogInController::class),
   (new Extend\Routes('forum'))
     ->get('/ssowat/logout', 'logout.ssowat', Controllers\SSOwatLogOutController::class),
-  (new Extend\Middleware('frontend'))->add(Middleware\SSOwatMiddleware::class)
+  (new Extend\Middleware('api'))->add(Middleware\SSOwatMiddleware::class)
 ];
