@@ -148,9 +148,7 @@ __webpack_require__.r(__webpack_exports__);
 var settingsPrefix = 'tituspijean-auth-ssowat.';
 var translationPrefix = 'tituspijean-auth-ssowat.admin.settings.';
 
-var SSOwatSettingsModal =
-/*#__PURE__*/
-function (_SettingsModal) {
+var SSOwatSettingsModal = /*#__PURE__*/function (_SettingsModal) {
   Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(SSOwatSettingsModal, _SettingsModal);
 
   function SSOwatSettingsModal() {
