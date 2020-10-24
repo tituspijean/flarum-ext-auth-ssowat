@@ -2,6 +2,7 @@
 
 namespace TitusPiJean\Flarum\Auth\SSOwat\Middleware;
 
+use Illuminate\Support\Arr;
 use Flarum\Foundation\Application;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -12,6 +13,7 @@ use Illuminate\Events\Dispatcher;
 use Flarum\Http\SessionAuthenticator;
 use Flarum\Http\Rememberer;
 use Flarum\User\Event\LoggedOut;
+use Flarum\Http\UrlGenerator;
 use Flarum\User\Exception\PermissionDeniedException;
 use Flarum\Settings\SettingsRepositoryInterface;
 
@@ -26,12 +28,14 @@ class SSOwatMiddleware implements MiddlewareInterface
 */
 public function __construct(
     Application $app,
+    UrlGenerator $url,
     Dispatcher $events,
     SessionAuthenticator $authenticator,
     Rememberer $rememberer,
     SettingsRepositoryInterface $settings
 ) {
     $this->app = $app;
+    $this->url = $url;
     $this->events = $events;
     $this->settings = $settings;
     $this->authenticator = $authenticator;
@@ -40,7 +44,7 @@ public function __construct(
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // Retrieve the session and check if the user logged in with SSOwat
+        // Retrieve the session and check if the user is logged in with SSOwat
         $session=$request->getAttribute('session');
         $ssowatUser=$session->get('ssowatUser');
         if ($ssowatUser) {
@@ -54,7 +58,7 @@ public function __construct(
                     // If not, do the same steps as Flarum's LogOutController
                     // Prepare redirection to SSOwat
                     $ssowat = $this->settings->get('tituspijean-auth-ssowat.domain');
-                    $url = array_get($request->getQueryParams(), 'return', $this->app->url());
+                    $url = Arr::get($request->getQueryParams(), 'return', $this->url->to('forum'));
                     $r = base64_encode($url);
                     //$r = base64_encode("https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
                     $urlredirect = "https://" . $ssowat . "/yunohost/sso/?action=logout&r=" . $r;
@@ -62,13 +66,13 @@ public function __construct(
                     //Log out
                     $this->authenticator->logOut($session);
                     $actor->accessTokens()->delete();
-                    $this->events->fire(new LoggedOut($actor));
+                    $this->events->dispatch(new LoggedOut($actor));
                     $this->rememberer->forget($response);
                     // Throw an error if JSON was requested, or redirect to logout
                     if (str_contains($request->getHeaderLine('content-type'), 'json')) {
                         throw new PermissionDeniedException("You have been logged out from YunoHost.", 401, null);
                     } else {
-                        return new RedirectResponse($this->app->url()."/logout?token=".$session->get('csrf_token'));
+                        return new RedirectResponse($this->url->to('forum')->route('logout', ['token' => $session->get('csrf_token')]));
                     }
                 }
             }

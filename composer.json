@@ -13,7 +13,7 @@
 		"source": "https://github.com/tituspijean/flarum-ext-auth-ssowat"
 	},
 	"require": {
-		"flarum/core": ">=0.1.0-beta.12 <0.1.0-beta.14"
+		"flarum/core": "^0.1.0-beta.14"
 	},
 	"autoload": {
 		"psr-4": {
